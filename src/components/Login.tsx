@@ -1,44 +1,40 @@
 "use client";
 
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import axios from "axios";
 import { FormEventHandler, useState } from "react";
+import toast from "react-hot-toast";
 
 const Login = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
-
   const router = useRouter();
 
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
   const handleSubmit = async (e: any) => {
-    console.log({ username });
+    console.log({ email });
     console.log({ password });
 
     e.preventDefault();
-    setIsLoading(true);
-    setError(null);
 
     try {
-      const response = await axios.post("http://localhost:5000/login", {
-        username,
+      const response = await axios.post("http://localhost:5001/login", {
+        email,
         password,
       });
-      console.log("response", response);
-
-      if (response) {
-        router.push("/");
+    
+      if(response.status === 200) {
+        console.log('response', response);
+        toast.success('Siging In...')
+        window.localStorage.setItem('user_key', response.data.token);
+        router.push("/movie/list");
       }
-      // Optionally, handle successful login (e.g., redirect, store token, etc.)
     } catch (err: any) {
       console.log("err", err);
-
-      setError(err.response ? err.response.data : "An error occurred");
-    } finally {
-      setIsLoading(false);
+      toast.error(err.response.data.msg || 'Something went wrong!');
     }
   };
+
   return (
     <div className="w-full ">
       <div className="h-custom-calc flex flex-col items-center justify-center px-6 py-8 mx-auto  lg:py-0">
@@ -48,8 +44,7 @@ const Login = () => {
 
         <form
           className="space-y-6 w-full flex flex-col items-center"
-          action="#"
-          method="POST"
+          onSubmit={handleSubmit}
         >
           <div className="mt-2 w-full flex justify-center">
             <input
@@ -58,6 +53,8 @@ const Login = () => {
               className="placeholder-white py-3 px-4 block  rounded-lg bg-input-green text-sm  text-white outline-0 border-0 w-[300px] h-[44px] max-sm:w-full max-sm:max-w-[380px]"
               required
               placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
           <div className="mt-2 w-full flex justify-center">
@@ -68,6 +65,8 @@ const Login = () => {
               placeholder="Password"
               required
               className="placeholder-white py-3 px-4 block rounded-lg bg-input-green text-sm  text-white outline-0 border-0 w-[300px] h-[44px] max-sm:w-full max-sm:max-w-[380px]"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
           </div>
           <div>

@@ -1,4 +1,46 @@
+"use client";
+
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import toast from "react-hot-toast";
+
 const Signup = () => {
+  const router = useRouter();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const handleSubmit = async (e: any) => {
+    console.log({ email });
+    console.log({ password });
+
+    e.preventDefault();
+
+    if(password !== confirmPassword) {
+      toast.error('Password Mismatched');
+      return;
+    }
+
+    try {
+      const response = await axios.post("http://localhost:5001/signup", {
+        username,
+        email,
+        password,
+      });
+    
+      if(response.status === 201) {
+        console.log('response', response);
+        toast.success('User Registered Successfully...')
+      }
+    } catch (err: any) {
+      console.log("err", err);
+      toast.error(err.response.data.msg || 'Something went wrong!');
+    }
+  };
+  
   return (
     <div className="w-full">
       <div className="h-custom-calc flex flex-col items-center justify-center px-6 py-8 mx-auto lg:py-0">
@@ -8,8 +50,7 @@ const Signup = () => {
 
         <form
           className="space-y-6 w-full flex flex-col items-center"
-          action="#"
-          method="POST"
+          onSubmit={handleSubmit}
         >
           <div className="mt-2 w-full flex justify-center">
             <input
@@ -18,6 +59,8 @@ const Signup = () => {
               className="placeholder-white py-3 px-4 block  rounded-lg bg-input-green text-sm  text-white outline-0 border-0 w-[300px] h-[44px] max-sm:w-full max-sm:max-w-[380px]"
               required
               placeholder="User name"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
             />
           </div>
           <div className="mt-2 w-full flex justify-center">
@@ -27,6 +70,8 @@ const Signup = () => {
               className="placeholder-white py-3 px-4 block  rounded-lg bg-input-green text-sm  text-white outline-0 border-0 w-[300px] h-[44px] max-sm:w-full max-sm:max-w-[380px]"
               required
               placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
           <div className="mt-2 w-full flex justify-center">
@@ -36,6 +81,20 @@ const Signup = () => {
               type="password"
               placeholder="Password"
               required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="placeholder-white py-3 px-4 block rounded-lg bg-input-green text-sm  text-white outline-0 border-0 w-[300px] h-[44px] max-sm:w-full max-sm:max-w-[380px]"
+            />
+          </div>
+          <div className="mt-2 w-full flex justify-center">
+            <input
+              id="confirmPassword"
+              name="confirmPassword"
+              type="password"
+              placeholder="Confirm Password"
+              required
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
               className="placeholder-white py-3 px-4 block rounded-lg bg-input-green text-sm  text-white outline-0 border-0 w-[300px] h-[44px] max-sm:w-full max-sm:max-w-[380px]"
             />
           </div>

@@ -3,6 +3,7 @@ import { Montserrat } from "next/font/google";
 import "./globals.css";
 
 import Footer from "@/components/Footer";
+import { Toaster } from "react-hot-toast";
 
 const montserrat = Montserrat({ subsets: ["latin"] });
 
@@ -22,6 +23,7 @@ export default function RootLayout({
         className={`${montserrat.className} bg-custom-sea-green flex flex-col`}
       >
         <div className="max-w-[1440px] w-full mx-auto max-sm:p-5 p-[120px] max-xl:p-[60px]">
+          <Toaster toastOptions={ {duration: 3000}}/>
           {children}
         </div>
         <Footer />
