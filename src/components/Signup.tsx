@@ -14,9 +14,6 @@ const Signup = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const handleSubmit = async (e: any) => {
-    console.log({ email });
-    console.log({ password });
-
     e.preventDefault();
 
     if(password !== confirmPassword) {
@@ -25,14 +22,13 @@ const Signup = () => {
     }
 
     try {
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/signup`, {
+      const response = await axios.post("http://localhost:5001/signup", {
         username,
         email,
         password,
       });
     
       if(response.status === 201) {
-        console.log('response', response);
         toast.success('User Registered Successfully...')
       }
     } catch (err: any) {

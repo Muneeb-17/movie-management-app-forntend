@@ -6,12 +6,10 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 const List = ({ movies, deleteMovies, editMoviesDetails, setPage }: any) => {
-  console.log("movieesss", movies);
   const Router = useRouter();
   const cardsLimit = movies.limit;
   const totalCards = movies.totalMovies;
   const paginationButtons = Math.ceil(totalCards / cardsLimit);
-  console.log("Pagination Button", paginationButtons);
   const buttonsArray = Array.from(
     { length: paginationButtons < movies.totalMovies ? paginationButtons : 1 },
     (_, index) => index + 1
@@ -21,9 +19,7 @@ const List = ({ movies, deleteMovies, editMoviesDetails, setPage }: any) => {
   const handleNext = (e: any) => {
     let page = ++movies.page;
     e.preventDefault();
-    console.log("next", page, movies.totalPages);
     if (page <= movies.totalPages) {
-      console.log("next", page);
       setPage(page);
     }
   };
@@ -31,7 +27,6 @@ const List = ({ movies, deleteMovies, editMoviesDetails, setPage }: any) => {
   const handlePrevious = (e: any) => {
     let page = --movies.page;
     e.preventDefault();
-    console.log("next", page, movies.totalPages);
     if (page > 0) {
       setPage(page);
     }
@@ -39,7 +34,6 @@ const List = ({ movies, deleteMovies, editMoviesDetails, setPage }: any) => {
 
   const handleButtons = (event: React.MouseEvent<HTMLButtonElement>) => {
     const val = event.currentTarget.id;
-    console.log("val", val);
   };
 
   const addMovies = () => {
@@ -74,7 +68,6 @@ const List = ({ movies, deleteMovies, editMoviesDetails, setPage }: any) => {
         <div className="flex gap-[17px] flex-wrap justify-around max-[700px]:justify-center">
           {movies &&
             movies.movies?.map((movie: any) => {
-              console.log("movie---", movies);
               return (
                 <Card
                   key={movie.id}

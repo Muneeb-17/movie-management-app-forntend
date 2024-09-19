@@ -35,7 +35,6 @@ const MovieForm = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    console.log({ name }, { value });
 
     setFormData((prevData) => ({
       ...prevData,
@@ -63,7 +62,7 @@ const MovieForm = () => {
 
     try {
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/movies/`,
+        "http://localhost:5001/movies/",
         formPayload,
         { headers }
       );

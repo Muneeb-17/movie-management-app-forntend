@@ -1,5 +1,4 @@
 import FooterImage from "@/assets/icons/FooterImage";
-import { usePathname } from "next/navigation";
 
 const Footer = () => {
   return (

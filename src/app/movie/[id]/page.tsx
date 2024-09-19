@@ -6,17 +6,17 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { useEffect, useLayoutEffect, useState } from "react";
 
-const MovieForm = ({params}: {params: { id: string }}) => {
+const MovieForm = ({ params }: { params: { id: string } }) => {
   const Router = useRouter();
 
   useLayoutEffect(() => {
     const token = window.localStorage.getItem("user_key");
-  
-    if(!token) {
-      Router.push('/login');
+
+    if (!token) {
+      Router.push("/login");
     }
-  },[])
-  
+  }, []);
+
   const [file, setFile] = useState<File | null>(null);
   const [formData, setFormData] = useState({
     title: "",
@@ -25,9 +25,9 @@ const MovieForm = ({params}: {params: { id: string }}) => {
   const [id, setId] = useState<any>(null);
 
   useEffect(() => {
-    setId(params.id)
+    setId(params.id);
     editMoviesDetails(params.id);
-  },[])
+  }, []);
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       setFile(e.target.files[0]);
@@ -36,7 +36,6 @@ const MovieForm = ({params}: {params: { id: string }}) => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    console.log({ name }, { value });
 
     setFormData((prevData) => ({
       ...prevData,
@@ -55,7 +54,7 @@ const MovieForm = ({params}: {params: { id: string }}) => {
         "Content-Type": "multipart/form-data",
       };
 
-      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/movies/${id}`, {
+      const response = await axios.get(`http://localhost:5001/movies/${id}`, {
         headers,
       });
 
@@ -65,16 +64,18 @@ const MovieForm = ({params}: {params: { id: string }}) => {
         return;
       }
       if (response.status === 200) {
-        const {data: {movie: {title, publishingYear}}} = response;
-        console.log({title}, {publishingYear});
-        
-        setFormData({title: title, publishingYear: publishingYear})
+        const {
+          data: {
+            movie: { title, publishingYear },
+          },
+        } = response;
 
+        setFormData({ title: title, publishingYear: publishingYear });
       }
-    } catch (err:any) {
-      if(err.status === 401) {
-        toast.error('Unauthorized User')
-        Router.push('/login');
+    } catch (err: any) {
+      if (err.status === 401) {
+        toast.error("Unauthorized User");
+        Router.push("/login");
         return;
       }
       toast.error("Something Went Wrong!");
@@ -96,34 +97,33 @@ const MovieForm = ({params}: {params: { id: string }}) => {
     formPayload.append("publishingYear", formData.publishingYear);
 
     const headers = {
-      Authorization:
-        `Bearer ${window.localStorage.getItem('user_key')}`,
-        "Content-Type": "multipart/form-data",
+      Authorization: `Bearer ${window.localStorage.getItem("user_key")}`,
+      "Content-Type": "multipart/form-data",
     };
 
     try {
       const response = await axios.put(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/movies/${id}`,
+        `http://localhost:5001/movies/${id}`,
         formPayload,
         { headers }
       );
 
-      if(response.status === 200) {
-        toast.success('Data Updated Successfully');
-        Router.push('/movie/list');
+      if (response.status === 200) {
+        toast.success("Data Updated Successfully");
+        Router.push("/movie/list");
       }
 
-      if(response.status === 401) {
-        toast.error('Unauthorized User')
-        Router.push('/login');
+      if (response.status === 401) {
+        toast.error("Unauthorized User");
+        Router.push("/login");
       }
 
       setFile(null);
       setFormData({ title: "", publishingYear: "" });
     } catch (error: any) {
-      if(error.status === 401) {
-        toast.error('Unauthorized User')
-        Router.push('/login');
+      if (error.status === 401) {
+        toast.error("Unauthorized User");
+        Router.push("/login");
         return;
       }
       toast.error(
@@ -131,7 +131,6 @@ const MovieForm = ({params}: {params: { id: string }}) => {
       );
     }
   };
-
 
   return (
     <DynamicForm

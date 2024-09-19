@@ -12,19 +12,15 @@ const Login = () => {
   const [password, setPassword] = useState("");
 
   const handleSubmit = async (e: any) => {
-    console.log({ email });
-    console.log({ password });
-
     e.preventDefault();
 
     try {
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/login`, {
+      const response = await axios.post("http://localhost:5001/login", {
         email,
         password,
       });
     
       if(response.status === 200) {
-        console.log('response', response);
         toast.success('Siging In...')
         window.localStorage.setItem('user_key', response.data.token);
         router.push("/movie/list");
