@@ -55,7 +55,7 @@ const MovieForm = ({params}: {params: { id: string }}) => {
         "Content-Type": "multipart/form-data",
       };
 
-      const response = await axios.get(`${process.env.BASE_URL}/movies/${id}`, {
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/movies/${id}`, {
         headers,
       });
 
@@ -103,7 +103,7 @@ const MovieForm = ({params}: {params: { id: string }}) => {
 
     try {
       const response = await axios.put(
-        `${process.env.BASE_URL}/movies/${id}`,
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/movies/${id}`,
         formPayload,
         { headers }
       );

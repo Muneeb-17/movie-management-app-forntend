@@ -63,7 +63,7 @@ const MovieForm = () => {
 
     try {
       const response = await axios.post(
-        `${process.env.BASE_URL}/movies/`,
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/movies/`,
         formPayload,
         { headers }
       );
