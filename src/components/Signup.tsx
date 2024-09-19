@@ -22,7 +22,7 @@ const Signup = () => {
     }
 
     try {
-      const response = await axios.post("http://localhost:5001/signup", {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/signup`, {
         username,
         email,
         password,

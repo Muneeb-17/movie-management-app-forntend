@@ -29,7 +29,7 @@ const ListPage = () => {
         "Content-Type": "multipart/form-data",
       };
     
-      const response = await axios.get(`http://localhost:5001/movies?limit=${limit}&page=${page}`, {
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/movies?limit=${limit}&page=${page}`, {
         headers,
       });
 
@@ -58,7 +58,7 @@ const ListPage = () => {
       };
 
       const response = await axios.delete(
-        `http://localhost:5001/movies/${id}`,
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/movies/${id}`,
         {
           headers,
         }
